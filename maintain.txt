@@ -1,0 +1,49 @@
+Infrastructure/Random Number Generation:
+The program generates a random period of time between 1 and 8 minutes for audio.
+The number of I-Ching cards and audio clips will be 2 times this number (each correspond to 30").
+
+A random number generator creates random tuple (x, y) for each clip/I-Ching card.
+The program takes this tuple and figures out which clip/I-Ching card it corresponds to
+by reading through a file (ichingtable.txt).
+For example, tuple (8, 8) would correspond to card/clip 64.
+A list is then created with all the cards/clips that will be used.
+
+The list is sorted using MergeSort (because composition loves organization!), but is sorted by
+string order rather than number order to prevent the piece from being completely linear.
+
+
+The Music Function:
+The program imports the music class, which contains methods for playing audio clips from disk.
+Audio clips must be 16 bit (the TIMARA major had the default bitrate set at 32 bit for her software
+and was very frustrated for a while).
+Audio clips must be at least 5.2 mb (the program can accommodate stereo--mono files are usually not
+large enough, as discovered).
+Converting 64 audio clips from 32 bit to 16 bit takes fucking forever.
+This program takes the data from the list, which are all conviently the file names for the audio clips,
+and puts them into a complete filepath name to find the file and play it.
+
+
+The Picture Function:
+This part of the program uses tkinter, the module for picture display in Python 3.
+This module only reads .gif (no .jpg).
+You can't convert from .jpg to .gif by changing the file extension name in Finder.
+(You have to actually run them through a converter online, because Preview has no "save as .gif" option).
+Doing this for 64 files takes fucking forever.
+The program takes the data from the list (which are all the filenames) and creates a filepath
+so that they can be pulled up and displayed.
+window = Tk() creates a window.
+The program uses variable.image = photo to retain all the images being displayed (so not just the last one is displayed).
+variable.pack(side=LEFT) displays all the photos left to right in one window.
+window.mainloop() displays the window.
+Running this function via multiprocessing on a mac creates some really nasty error messages, so for the
+mac version, the function is just called regularly (which makes it slow).
+
+Multiprocessing:
+This works if you only use it for the music function and not for the picture function on a Mac.
+Otherwise you get a really nasty error message (YOU HAVE CREATED A FORK WITHOUTH RUNNING EXEC YOUR COMPUTER WILL BURN IN HELL)
+and python crashes.
+
+Exception Handling:
+The only plausible error is entering the wrong filename, which is caught by an exception.
+The exception asks the user to restart the program and re-enter the filename.
+Any other errors that happen are cought by a general exception handling service.
